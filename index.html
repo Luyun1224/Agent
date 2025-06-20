@@ -36,7 +36,7 @@
         .card:hover {
             transform: translateY(-5px); /* 向上輕微移動 */
         }
-        /* 區塊標題樣式，包含下劃線動畫 */
+        /* 區塊標題樣式 */
         .section-title {
             font-size: 2.5rem; /* 較大標題 */
             font-weight: 700; /* 粗體 */
@@ -45,15 +45,9 @@
             text-align: center;
             position: relative;
         }
-        /* 區塊標題下劃線效果 */
+        /* 移除區塊標題下方的線條 */
         .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background-color: #6366f1; /* 紫色下劃線 */
-            margin: 1rem auto 0;
-            border-radius: 9999px;
+            content: none; /* 移除偽元素的內容，即線條 */
         }
         /* 代理人流程佈局 */
         .agent-flow {
