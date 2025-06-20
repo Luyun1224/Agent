@@ -53,8 +53,8 @@
         .agent-flow {
             position: relative;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column; /* 調整為垂直佈局 */
+            align-items: center; /* 居中對齊 */
             gap: 2rem;
             margin-top: 3rem;
             padding-bottom: 2rem; /* 留出底部空間 */
@@ -66,8 +66,8 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             padding: 1.5rem;
             text-align: center;
-            width: calc(33% - 2rem); /* 三列佈局 */
-            min-width: 280px; /* 最小寬度 */
+            width: 100%; /* 佔滿寬度 */
+            max-width: 380px; /* 最大寬度 */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -87,7 +87,7 @@
             padding: 2rem;
             width: 100%; /* 總策劃居中且寬度較大 */
             max-width: 400px;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem; /* 調整底部間距 */
             border-radius: 1.5rem;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
             position: relative;
@@ -109,37 +109,46 @@
             margin-bottom: 0.75rem;
         }
         /* 代理人方塊內容文字樣式 */
-        .agent-box p {
+        .agent-box p, .agent-box ul {
             font-size: 0.95rem;
             color: #666;
             flex-grow: 1; /* 讓內容填充空間 */
+            text-align: left; /* 列表文字左對齊 */
         }
 
         /* 響應式佈局調整，適用於平板和手機 */
         @media (max-width: 1024px) {
             .agent-box {
-                width: calc(50% - 2rem); /* 兩列佈局 */
+                width: 100%; /* 在小螢幕上單列佈局 */
+            }
+            .team-grid {
+                grid-template-columns: repeat(1, minmax(0, 1fr)); /* 小螢幕下單列 */
             }
         }
-        @media (max-width: 768px) {
-            .agent-box {
-                width: 100%; /* 單列佈局 */
+        @media (min-width: 1024px) {
+            .team-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr)); /* 大螢幕下三列 */
             }
-            .section-title {
-                font-size: 2rem;
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .team-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)); /* 中螢幕下兩列 */
             }
-            .card {
-                padding: 1.5rem;
-            }
+        }
+        .section-title {
+            font-size: 2rem;
+        }
+        .card {
+            padding: 1.5rem;
         }
 
         /* 箭頭樣式 */
         .arrow {
-            position: absolute;
+            position: relative; /* 調整為相對定位 */
+            width: 1px;
+            height: 20px; /* 縮短箭頭長度 */
             background-color: #6366f1; /* 紫色箭頭 */
-            height: 3px;
-            z-index: 5;
-            transform-origin: left center;
+            margin: 0.5rem auto; /* 調整間距 */
         }
         /* 箭頭尖端樣式 */
         .arrow::after {
@@ -147,12 +156,12 @@
             position: absolute;
             width: 0;
             height: 0;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-            border-left: 8px solid #6366f1;
-            right: -8px;
-            top: 50%;
-            transform: translateY(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid #6366f1; /* 調整箭頭大小 */
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -12px; /* 定位在箭頭底部 */
         }
 
         /* 脈衝動畫，用於總策劃代理人 */
@@ -208,7 +217,7 @@
     <div class="container">
         <!-- 頁面標題區塊 -->
         <header class="py-12 text-center">
-            <h1 class="text-5xl font-extrabold text-blue-800 mb-4">🌟 善用 AI 多代理架構完成複雜專案</h1>
+            <h1 class="text-5xl font-extrabold text-blue-800 mb-4">� 善用 AI 多代理架構完成複雜專案</h1>
             <p class="text-xl text-gray-600">AI 已不再是單一助手，而是您的智慧團隊夥伴。</p>
         </header>
 
@@ -328,41 +337,75 @@
             </div>
         </section>
 
-        <!-- 多代理人範例區塊 -->
+        <!-- 多代理人範例區塊 (已整合新的團隊架構) -->
         <section class="mb-12">
             <h2 class="section-title">🧩 多代理人範例<br><small class="text-xl font-normal text-gray-500">（以「生活形態醫學共識撰寫」為例）</small></h2>
             <div class="flex flex-col items-center agent-flow">
-                <!-- 總策劃 Agent 方塊 -->
+                <!-- 總策劃 Agent -->
                 <div class="orchestrator-box text-center">
                     <h3 class="text-3xl font-extrabold mb-2">🎯 總策劃 Agent</h3>
                     <p class="text-lg">統整章節架構、分配任務、控制證據等級一致性</p>
                 </div>
 
                 <!-- 箭頭向下視覺元素 -->
-                <div class="w-1 bg-indigo-500 h-20 rounded-full my-4 relative">
-                    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-t-[15px] border-l-transparent border-r-transparent border-t-indigo-500"></div>
+                <div class="arrow"></div>
+
+                <!-- 研究統籌 Agent -->
+                <div class="agent-box">
+                    <h4 class="text-indigo-700 text-xl font-bold mb-2">研究統籌 Agent (Research Coordinator)</h4>
+                    <ul class="list-disc pl-5 text-left text-gray-700 text-base space-y-1">
+                        <li>掌控研究背景、研究方向與整體流程</li>
+                        <li>確保各階段之高品質控管</li>
+                    </ul>
                 </div>
 
-                <!-- 各個 AI 代理人方塊 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+                <!-- 箭頭向下視覺元素 -->
+                <div class="arrow"></div>
+
+                <!-- 代理人團隊網格容器 -->
+                <div class="team-grid grid gap-8 w-full max-w-6xl">
+                    <!-- 文獻搜尋 Agent 團隊 -->
                     <div class="agent-box">
-                        <h4 class="text-indigo-700">📚 文獻搜尋 Agent</h4>
-                        <p>根據章節主題進行高等級文獻抓取（可用深入研究功能）</p>
+                        <h4 class="text-indigo-700 text-xl font-bold mb-2">📚 文獻搜尋 Agent 團隊</h4>
+                        <ul class="list-disc pl-5 text-left text-gray-700 text-base space-y-1">
+                            <li>系統性文獻回顧 Agent：搜尋 PubMed、Cochrane；整理高引用、可靠之論文資訊</li>
+                            <li>在地文獻專家 Agent：專責蒐集台灣在地實證研究與政策／法規文獻</li>
+                            <li>證據分級 Agent：根據 GRADE System 評估文獻證據強度</li>
+                        </ul>
                     </div>
+
+                    <!-- 內容撰寫 Agent 團隊 -->
                     <div class="agent-box">
-                        <h4 class="text-indigo-700">✍️ 章節撰寫 Agent</h4>
-                        <p>每章 2000-3000 字，引用文獻，自動摘要</p>
+                        <h4 class="text-indigo-700 text-xl font-bold mb-2">✍️ 內容撰寫 Agent 團隊</h4>
+                        <ul class="list-disc pl-5 text-left text-gray-700 text-base space-y-1">
+                            <li>研究背景撰寫 Agent：以學術語言精準撰寫背景章節</li>
+                            <li>在地化內容 Agent：統整台灣在地元素並融入章節</li>
+                            <li>章節專職 Agent (11 位)：各自負責一章之撰寫與修訂</li>
+                        </ul>
                     </div>
+
+                    <!-- 視覺化 Agent 團隊 -->
                     <div class="agent-box">
-                        <h4 class="text-indigo-700">🖼 視覺設計 Agent</h4>
-                        <p>為每章生成摘要圖、統計圖、資訊圖表</p>
+                        <h4 class="text-indigo-700 text-xl font-bold mb-2">🖼 視覺設計 Agent 團隊</h4>
+                        <ul class="list-disc pl-5 text-left text-gray-700 text-base space-y-1">
+                            <li>Infographics 設計 Agent：製作易於理解的資訊圖表</li>
+                            <li>數據美化 Agent：以精確且直觀的方式呈現數據視覺化</li>
+                        </ul>
                     </div>
+
+                    <!-- 品質控管 Agent 團隊 -->
                     <div class="agent-box">
-                        <h4 class="text-indigo-700">🧪 品質控管 Agent</h4>
-                        <p>整體內容邏輯一致性、風格一致性修正</p>
+                        <h4 class="text-indigo-700 text-xl font-bold mb-2">🧪 品質控管 Agent 團隊</h4>
+                        <ul class="list-disc pl-5 text-left text-gray-700 text-base space-y-1">
+                            <li>APA 格式檢查 Agent</li>
+                            <li>醫學術語準確性 Agent</li>
+                            <li>交叉引用檢查 Agent</li>
+                        </ul>
                     </div>
-                    <div class="agent-box">
-                        <h4 class="text-indigo-700">📊 評估產出 Agent</h4>
+
+                    <!-- 評估產出 Agent (保持獨立，處理最終輸出) -->
+                    <div class="agent-box md:col-span-1 lg:col-span-1">
+                        <h4 class="text-indigo-700 text-xl font-bold mb-2">📊 評估產出 Agent</h4>
                         <p>將結果製作成網頁、PDF、語音、廣播等輸出形式</p>
                     </div>
                 </div>
@@ -413,3 +456,4 @@
     </div>
 </body>
 </html>
+�
